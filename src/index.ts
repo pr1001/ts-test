@@ -57,6 +57,11 @@ class List implements Expression {
     static nil = List.makeNil();
 }
 
+// Normal Forms
+function add(left: Expression, right: Expression): Atom {
+    return new Atom(left.eval() + right.eval())
+}
+
 // Remember how I said Lisp only has a handful of primitives? Here are ALL the primitives required for a fully functioning Lisp.:
 // eq?
 // eq? just tests for equality. It returns True if the two arguments are the same, otherwise false.
@@ -81,4 +86,4 @@ function sillyLisp(source: string) {
 
 }
 
-export { sillyLisp, Atom, Expression, List, Symbol };
+export { sillyLisp, Atom, Expression, List, Symbol, add };

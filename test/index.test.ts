@@ -1,4 +1,4 @@
-import { sillyLisp, Atom, List, Symbol } from "../src/index";
+import { sillyLisp, Atom, List, Symbol, add } from "../src/index";
 
 test('new Atom(3) has a value of 3', () => {
     const a = new Atom(3);
@@ -17,9 +17,19 @@ test('new List([]) returns List.nil', () => {
     expect(l).toStrictEqual(List.nil);
 });
 
-test('new Symbol(\'a\', 3) has a value of 3', () => {
+test("new Symbol('a', 3) has a value of 3", () => {
     const s = new Symbol('a', 3);
     expect(s.eval()).toBe(3);
+});
+
+test("add(new Atom(1), new Atom(2)) has a value of 3", () => {
+    const a = add(new Atom(1), new Atom(2));
+    expect(a.eval()).toBe(3);
+});
+
+test("add(new Atom(1), add(new Atom(2), new Atom(3))) has a value of 6", () => {
+    const a = add(new Atom(1), add(new Atom(2), new Atom(3)));
+    expect(a.eval()).toBe(6);
 });
 
 test('(1 2 +) to equal 3', () => {
