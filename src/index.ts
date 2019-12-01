@@ -23,6 +23,21 @@ class Atom implements Expression {
 
 // Let's take a look at these atom examples. 1 is just a number, similar to an int in C or Python. However, +, john and burger are a bit unusual. In Lisp, these are called symbols. 
 // The concept of a symbol is implicit in other languages, Lisp just exposes the concept explicitly. In other languages, symbols are used as variable names. To execute your programs, a compiler/interpreter will tokenize your source code and then identify these symbols. In Lisp, symbols are also used to as identifiers for variables, however you get to muck with them directly. Symbols are just entities that you can bind values to.
+let symbolTable: { [index: string]: Symbol } = {};
+class Symbol extends Atom {
+    readonly name: string;
+    constructor(name: string, value: Value) {
+        super(value);
+        this.name = name;
+    }
+
+    eval() {
+        if (this.value === undefined) {
+            throw new Error(`Cannot evaluate symbol ${name}`);
+        }
+        return this.value;
+    }
+}
 
 // A list is a number of expressions enclosed within parentheses. Notice how I didn't say a list of atoms.
 class List implements Expression {
@@ -73,4 +88,4 @@ function sillyLisp(source: string) {
 
 }
 
-export { sillyLisp, Atom, Expression, List };
+export { sillyLisp, Atom, Expression, List, Symbol };
