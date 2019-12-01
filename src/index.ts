@@ -30,13 +30,6 @@ class Symbol extends Atom {
         super(value);
         this.name = name;
     }
-
-    eval() {
-        if (this.value === undefined) {
-            throw new Error(`Cannot evaluate symbol ${name}`);
-        }
-        return this.value;
-    }
 }
 
 // A list is a number of expressions enclosed within parentheses. Notice how I didn't say a list of atoms.
