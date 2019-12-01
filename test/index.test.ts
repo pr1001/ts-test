@@ -1,4 +1,4 @@
-import { sillyLisp, Atom, List } from "../src/index";
+import { sillyLisp, Atom, Expression, List } from "../src/index";
 
 test('new Atom(3) has a value of 3', () => {
     const a = new Atom(3);
@@ -9,6 +9,12 @@ test('new Atom(3) has a value of 3', () => {
 test('List.nil has a value of []', () => {
     const n = List.nil;
     expect(n.eval()).toStrictEqual([]);
+    expect(n.expressions.length).toBe(0);
+});
+
+test('new List([]) returns List.nil', () => {
+    const l = new List([]);
+    expect(l).toStrictEqual(List.nil);
 });
 
 test('(1 2 +) to equal 3', () => {

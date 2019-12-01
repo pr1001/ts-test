@@ -26,13 +26,22 @@ class Atom implements Expression {
 
 // A list is a number of expressions enclosed within parentheses. Notice how I didn't say a list of atoms.
 class List implements Expression {
+    readonly expressions: Expression[];
+
+    constructor(expressions: Expression[]) {
+        this.expressions = expressions;
+        if (expressions.length === 0) {
+            return List.nil;
+        }
+    }
+
     eval() {
         // The rules for evaluating a normal lisp expression or form is easy. Take ~first~ (LAST!) element in a list, look up its value and apply it to the other elements in the list.
         throw new Error("Method not implemented.");
     }
 
     private static makeNil = () => {
-        const l = new List();
+        const l = new List([]);
         l.eval = () => { return [] };
         return l;
     }
@@ -64,4 +73,4 @@ function sillyLisp(source: string) {
 
 }
 
-export { sillyLisp, Atom, List };
+export { sillyLisp, Atom, Expression, List };
