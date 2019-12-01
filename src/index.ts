@@ -58,11 +58,22 @@ class List implements Expression {
 }
 
 // Normal Forms
-function add(left: Expression, right: Expression): Atom {
-    return new Atom(left.eval() + right.eval())
+function add(args: Expression[]): Atom {
+    if (args.length < 2) {
+        throw new Error(`Expected at least 2 arguments, got ${args.length}`)
+    }
+    // TODO: reduceRight instead?
+    const a = args.reduce((accumulator, expression) => new Atom(accumulator.eval() + expression.eval()));
+    return a as Atom;
 }
-function subtract(left: Expression, right: Expression): Atom {
-    return new Atom(left.eval() - right.eval())
+function subtract(args: Expression[]): Atom {
+    if (args.length < 2) {
+        throw new Error(`Expected at least 2 arguments, got ${args.length}`)
+    }
+    // TODO: reduceRight instead?
+    const a = args.reduce((accumulator, expression) => new Atom(accumulator.eval() - expression.eval()));
+    return a as Atom;
+}
 }
 
 // Remember how I said Lisp only has a handful of primitives? Here are ALL the primitives required for a fully functioning Lisp.:
