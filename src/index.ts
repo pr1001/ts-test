@@ -74,6 +74,13 @@ function subtract(args: Expression[]): Atom {
     const a = args.reduce((accumulator, expression) => new Atom(accumulator.eval() - expression.eval()));
     return a as Atom;
 }
+function multiply(args: Expression[]): Atom {
+    if (args.length !== 2) {
+        throw new Error(`Expected 2 arguments, got ${args.length}`)
+    }
+    const [left, right] = args;
+    return new Atom(left.eval() * right.eval())
+}
 }
 
 // Remember how I said Lisp only has a handful of primitives? Here are ALL the primitives required for a fully functioning Lisp.:
@@ -100,4 +107,4 @@ function sillyLisp(source: string) {
 
 }
 
-export { sillyLisp, Atom, Expression, List, Symbol, add, subtract };
+export { sillyLisp, Atom, Expression, List, Symbol, add, subtract, multiply };

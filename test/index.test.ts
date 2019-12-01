@@ -1,4 +1,4 @@
-import { sillyLisp, Atom, List, Symbol, add, subtract } from "../src/index";
+import { sillyLisp, Atom, List, Symbol, add, subtract, multiply } from "../src/index";
 
 // Data Types
 
@@ -54,6 +54,19 @@ test("subtract(new Atom(3), new Atom(2), new Atom(1)) has a value of 0", () => {
 test("subtract(new Atom(3), subtract(new Atom(2), new Atom(1))) has a value of 1", () => {
     const s = subtract([new Atom(3), subtract([new Atom(2), new Atom(1)])]);
     expect(s.eval()).toBe(2);
+});
+
+test("multiply(new Atom(2)) throws an error", () => {
+    expect(() => multiply([new Atom(2)])).toThrowError();
+});
+
+test("multiply(new Atom(1), new Atom(2), new Atom(3)) throws an error", () => {
+    expect(() => multiply([new Atom(1), new Atom(2), new Atom(3)])).toThrowError();
+});
+
+test("multiply(new Atom(2), new Atom(3)) has a value of 6", () => {
+    const m = multiply([new Atom(2), new Atom(3)]);
+    expect(m.eval()).toBe(6);
 });
 
 // Evaluation
