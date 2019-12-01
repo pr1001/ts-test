@@ -1,4 +1,4 @@
-import { sillyLisp, Atom, List, Symbol, add, subtract, multiply } from "../src/index";
+import { sillyLisp, Atom, List, Symbol, add, subtract, multiply, divide } from "../src/index";
 
 // Data Types
 
@@ -67,6 +67,19 @@ test("multiply(new Atom(1), new Atom(2), new Atom(3)) throws an error", () => {
 test("multiply(new Atom(2), new Atom(3)) has a value of 6", () => {
     const m = multiply([new Atom(2), new Atom(3)]);
     expect(m.eval()).toBe(6);
+});
+
+test("divide(new Atom(2)) throws an error", () => {
+    expect(() => divide([new Atom(2)])).toThrowError();
+});
+
+test("divide(new Atom(1), new Atom(2), new Atom(3)) throws an error", () => {
+    expect(() => divide([new Atom(1), new Atom(2), new Atom(3)])).toThrowError();
+});
+
+test("divide(new Atom(4), new Atom(2)) has a value of 2", () => {
+    const m = divide([new Atom(4), new Atom(2)]);
+    expect(m.eval()).toBe(2);
 });
 
 // Evaluation
