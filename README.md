@@ -22,6 +22,8 @@ Unfortunately there I got bogged down. I was struggling with making type-safe re
 
 I decided to step back and started skimming the [original Lisp paper](http://www-formal.stanford.edu/jmc/recursive/recursive.html) and trying to implement what I read. This gave me a recursive `List` implementation and evaluation steps that were generally looking much better. You can see the work in [`index.ts`](src/index.ts). Basic evaluation of the AST is working, but I had issues with `cons`, `car`, and `cdr`.
 
-In the interest of time and actually implementing a postfix Lisp, I decided to translate Norvig's [Lispy](http://norvig.com/lispy.html) from Python to Typescript. Implementing his simpler Lispy Calculator form was relatively straight-forward, with a fair amount of the time simply spent translating how Python references arrays and their indices. I implemented the bare minimum environment to get his examples to evaluate correctly.
+In the interest of time and actually implementing a postfix Lisp, I decided to translate Norvig's [Lispy](http://norvig.com/lispy.html) from Python to Typescript. Implementing his simpler Lispy Calculator form was relatively straight-forward, with a fair amount of the time simply spent translating how Python references arrays and their indices. I implemented the bare minimum environment to get his examples to evaluate correctly. You can see it in [`Lispy.ts`](src/Lispy.ts).
 
 Once I got the Lispy Calculator form working, it didn't take long at all to switch to postfix evaluation. I did it by reading from the end of lists and reversing them as appropriate, but from looking atthe [reverse Polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation) Wikipedia article right now, I might have benefited from using a [Stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)).
+
+I tried to write [Jest](http://jestjs.io) tests as I worked, though coverage is limited.
