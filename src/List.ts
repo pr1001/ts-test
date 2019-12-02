@@ -82,14 +82,25 @@ function cons2(left: any, right: any): List2 {
 let symbolTable: { [index: string]: any } = {};
 
 symbolTable["+"] = (list: List2): number => {
-    function add2Helper(accumulator: number, list: List2): number {
+    function add(accumulator: number, list: List2): number {
         if (list === List2.nil) {
             return accumulator
         }
-        return add2Helper(accumulator + car2(list), cdr2(list));
+        return add(accumulator + car2(list), cdr2(list));
     }
-    return add2Helper(0, list);
+    return add(0, list);
 };
+symbolTable["-"] = (list: List2): number => {
+    function subtract(accumulator: number, list: List2): number {
+        if (list === List2.nil) {
+            return accumulator
+        }
+        return subtract(accumulator - car2(list), cdr2(list));
+    }
+    const head = car2(list);
+    const tail = cdr2(list);
+    return subtract(head, tail);
+}
 
 function map2(list: List2, f: (i: any) => any): List2 {
     if (list === List2.nil) {
@@ -128,4 +139,5 @@ function eval2(list: List2): any {
     }
 }
 
-console.log(eval2(new List2(new Symbol2("+"), new List2(1, new List2(2, List2.nil)))))
+// console.log(eval2(new List2(new Symbol2("+"), new List2(1, new List2(2, List2.nil)))))
+// console.log(eval2(new List2(new Symbol2("-"), new List2(7, new List2(2, List2.nil)))))
