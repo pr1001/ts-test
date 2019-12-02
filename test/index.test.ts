@@ -84,6 +84,11 @@ test("divide(new Atom(4), new Atom(2)) has a value of 2", () => {
 
 // Evaluation
 
+test('new List([new Atom(1), new Atom(\'a\')]) cannot be evaluated, as the first item must be a symbol', () => {
+    const l = new List([new Atom(1), new Atom('a')]);
+    expect(() => l.eval()).toThrowError()
+});
+
 test('(1 2 +) to equal 3', () => {
     expect(sillyLisp('(1 2 +)')).toBe(3);
 });
