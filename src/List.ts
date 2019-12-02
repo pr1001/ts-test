@@ -9,10 +9,10 @@ class Symbol2 {
 }
 
 class List2 {
-    readonly head: any;
+    readonly head: Expression2;
     readonly tail: List2;
 
-    constructor(head: any, tail: List2) {
+    constructor(head: Expression2, tail: List2) {
         this.head = head;
         this.tail = tail;
     }
@@ -28,13 +28,13 @@ class List2 {
 // console.log(new List2(3, List2.nil));
 // console.log(new List2(5, new List2(3, List2.nil)));
 
-function atom2(input: any): boolean {
+function atom2(input: Expression2): boolean {
     return !(input instanceof List2);
 }
 // console.log(atom2(1));
 // console.log(atom2(List2.nil));
 
-function eq2(left: any, right: any): boolean {
+function eq2(left: Expression2, right: Expression2): boolean {
     if (left instanceof List2 || right instanceof List2) {
         throw new Error("Undefined");
     }
@@ -44,7 +44,7 @@ function eq2(left: any, right: any): boolean {
 // console.log(eq2(2, 2))
 // console.log(eq2(1, List2.nil))
 
-function car2(list: List2): any {
+function car2(list: List2): Expression2 {
     return list.head;
 }
 // console.log(car2(new List2(1, new List2(2, List2.nil))))
@@ -60,7 +60,7 @@ function cdr2(list: List2): List2 {
 // console.log(cdr2(new List2(1, new List2(2, new List2(3, List2.nil)))));
 // console.log(cdr2(List2.nil))
 
-function cons2(left: any, right: any): List2 {
+function cons2(left: Expression2, right: Expression2): List2 {
     return new List2(left, new List2(right, List2.nil));
 }
 // console.log(cons2(1, 2));
@@ -84,7 +84,7 @@ symbolTable["+"] = (list: List2): number => {
         if (list === List2.nil) {
             return accumulator
         }
-        return add(accumulator + car2(list), cdr2(list));
+        return add(accumulator + eval2(car2(list)), cdr2(list));
     }
     return add(0, list);
 };
@@ -93,24 +93,24 @@ symbolTable["-"] = (list: List2): number => {
         if (list === List2.nil) {
             return accumulator
         }
-        return subtract(accumulator - car2(list), cdr2(list));
+        return subtract(accumulator - eval2(car2(list)), cdr2(list));
     }
-    const head = car2(list);
+    const head = eval2(car2(list));
     const tail = cdr2(list);
     return subtract(head, tail);
 }
 symbolTable["*"] = (list: List2): number => {
-    const left = car2(list);
-    const right = car2(cdr2(list));
+    const left = eval2(car2(list));
+    const right = eval2(car2(cdr2(list)));
     return left * right;
 }
 symbolTable["/"] = (list: List2): number => {
-    const left = car2(list);
-    const right = car2(cdr2(list));
+    const left = eval2(car2(list));
+    const right = eval2(car2(cdr2(list)));
     return left / right;
 }
 
-function map2(list: List2, f: (i: any) => any): List2 {
+function map2(list: List2, f: (i: Expression2) => Expression2): List2 {
     if (list === List2.nil) {
         return list;
     }
@@ -121,7 +121,17 @@ function map2(list: List2, f: (i: any) => any): List2 {
 }
 // console.log(map2(new List2(1, new List2(2, List2.nil)), (i) => i + 1));
 
-function eval2(list: List2): any {
+function eval2(expression: Expression2): any {
+    if (expression instanceof List2) {
+        return evalList(expression);
+    } else if (expression instanceof Symbol2) {
+        return symbolTable[expression.name];
+    } else {
+        return expression
+    }
+}
+
+function evalList(list: List2): any {
     if (list === List2.nil) {
         return;
     }
@@ -134,15 +144,7 @@ function eval2(list: List2): any {
         // apply it to the other elements in the list
         // If the arguments are also lists, rather than atoms, then evaluate the arguments first before evaluating the parent expression.
         const otherElements = cdr2(list);
-        const evaluatedElements = map2(otherElements, (element) => {
-            if (element instanceof List2) {
-                return eval2(element);
-            } else if (element instanceof Symbol2) {
-                return symbolTable[element.name];
-            } else {
-                return element
-            }
-        });
+        const evaluatedElements = map2(otherElements, eval2);
         return f(evaluatedElements);
     } else {
         throw new Error(`Expected symbol, got ${head}`)
