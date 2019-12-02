@@ -101,6 +101,16 @@ symbolTable["-"] = (list: List2): number => {
     const tail = cdr2(list);
     return subtract(head, tail);
 }
+symbolTable["*"] = (list: List2): number => {
+    const left = car2(list);
+    const right = car2(cdr2(list));
+    return left * right;
+}
+symbolTable["/"] = (list: List2): number => {
+    const left = car2(list);
+    const right = car2(cdr2(list));
+    return left / right;
+}
 
 function map2(list: List2, f: (i: any) => any): List2 {
     if (list === List2.nil) {
@@ -140,4 +150,17 @@ function eval2(list: List2): any {
 }
 
 // console.log(eval2(new List2(new Symbol2("+"), new List2(1, new List2(2, List2.nil)))))
+// (+ (+ 1 2) 3 4)
+// console.log(eval2(new List2(
+//     new Symbol2("+"),
+//     new List2(
+//         new List2(
+//             new Symbol2("+"),
+//             new List2(1, new List2(2, List2.nil)),
+//         ),
+//         new List2(3, new List2(4, List2.nil))
+//     )
+// )))
 // console.log(eval2(new List2(new Symbol2("-"), new List2(7, new List2(2, List2.nil)))))
+// console.log(eval2(new List2(new Symbol2('*'), new List2(2, new List2(3, List2.nil)))));
+// console.log(eval2(new List2(new Symbol2('/'), new List2(10, new List2(2, List2.nil)))));
