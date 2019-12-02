@@ -1,5 +1,5 @@
 import { List } from "./List";
-import { car, cdr } from "./SpecialForms";
+import { car, cdr, atom, cons } from "./SpecialForms";
 import { add, subtract, multiply, divide } from "./NormalForms";
 import { Symbol } from "./Symbol";
 
@@ -22,6 +22,8 @@ symbolTable["+"] = add;
 symbolTable["-"] = subtract;
 symbolTable["*"] = multiply;
 symbolTable["/"] = divide;
+symbolTable["atom?"] = atom;
+symbolTable["cons"] = cons;
 
 function map(list: List, f: (i: Expression) => Expression): List {
     if (list === List.nil) {
