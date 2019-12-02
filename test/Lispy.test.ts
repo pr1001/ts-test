@@ -1,19 +1,19 @@
 import { tokenize, parse, evaluate } from "../src/Lispy";
 
 test('tokenize', () => {
-    const program = "(begin (define r 10) (* pi (* r r)))";
-    const expectedTokens = ['(', 'begin', '(', 'define', 'r', '10', ')', '(', '*', 'pi', '(', '*', 'r', 'r', ')', ')', ')'];
-    expect(tokenize(program)).toEqual(expectedTokens)
+    const postfixProgram = "(((r r *) pi *) (10 r define) begin)"
+    const expectedTokens = ['(', '(', '(', 'r', 'r', '*', ')', 'pi', '*', ')', '(', '10', 'r', 'define', ')', 'begin' , ')'];
+    expect(tokenize(postfixProgram)).toEqual(expectedTokens)
 });
 
 test('parse', () => {
-    const program = "(begin (define r 10) (* pi (* r r)))"
-    const expectedTokens = ['begin', ['define', 'r', 10], ['*', 'pi', ['*', 'r', 'r']]];
-    expect(parse(program)).toEqual(expectedTokens);
+    const postfixProgram = "(((r r *) pi *) (10 r define) begin)"
+    const expectedTokens = [[['r', 'r', '*'], 'pi', '*'], [10, 'r', 'define'], 'begin'];
+    expect(parse(postfixProgram)).toEqual(expectedTokens);
 });
 
 test('evaluate', () => {
-    const program = "(begin (define r 10) (* pi (* r r)))";
+    const postfixProgram = "(((r r *) pi *) (10 r define) begin)"
     const expectedResult = Math.PI * 10 * 10;
-    expect(evaluate(parse(program))).toEqual(expectedResult);
+    expect(evaluate(parse(postfixProgram))).toEqual(expectedResult);
 })

@@ -63,21 +63,21 @@ export function evaluate(x: SExp, env: SEnv = global_env): SExp | undefined {
         return x
     }
     // conditional
-    else if ((x as SList)[0] == 'if') {
-        const [_, test, conseq, alt] = (x as SList);
+    else if ((x as SList).slice(-1)[0] == 'if') {
+        const [alt, conseq, test, _] = (x as SList);
         const exp = evaluate(test, env) ? conseq : alt;
         return evaluate(exp, env)
     }
     // definition
-    else if ((x as SList)[0] == 'define') {
-        const [_, symbol, exp] = (x as SList);
+    else if ((x as SList).slice(-1)[0] == 'define') {
+        const [exp, symbol, _] = (x as SList);
         env[symbol] = evaluate(exp, env);
     }
     // procedure call
     else {
         const l = (x as SList);
-        const proc = evaluate(l[0], env) as unknown as Function;
-        const args = l.slice(1).map(arg => evaluate(arg, env));
+        const proc = evaluate(l.slice(-1)[0], env) as unknown as Function;
+        const args = l.slice(0, -1).reverse().map(arg => evaluate(arg, env));
         return proc(...args);
     }
 }
