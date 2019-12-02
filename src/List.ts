@@ -1,5 +1,3 @@
-import { List } from ".";
-
 type Expression2 =  Atom2 | List2;
 type Atom2 = number | Symbol2;
 
@@ -139,6 +137,8 @@ function eval2(list: List2): any {
         const evaluatedElements = map2(otherElements, (element) => {
             if (element instanceof List2) {
                 return eval2(element);
+            } else if (element instanceof Symbol2) {
+                return symbolTable[element.name];
             } else {
                 return element
             }
@@ -148,6 +148,9 @@ function eval2(list: List2): any {
         throw new Error(`Expected symbol, got ${head}`)
     }
 }
+
+// symbolTable["a"] = 5;
+// console.log(eval2(new List2(new Symbol2("+"), new List2(new Symbol2('a'), new List2(2, List2.nil)))));
 
 // console.log(eval2(new List2(new Symbol2("+"), new List2(1, new List2(2, List2.nil)))))
 // (+ (+ 1 2) 3 4)
